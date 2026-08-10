@@ -1,0 +1,72 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+DIR=$HOME/PocoMiner-LTC
+
+clear
+
+echo "=============================="
+echo "       POCO X5 LTC MINER"
+echo "=============================="
+echo
+
+echo "1. Start Mining"
+echo "2. Stop Mining"
+echo "3. Monitor"
+echo "4. Status"
+echo "5. Exit"
+echo
+
+read -p "Choose : " menu
+
+case $menu in
+
+1)
+cd $DIR
+./start_ltc.sh
+;;
+
+2)
+cd $DIR
+./stop_ltc.sh
+;;
+
+3)
+cd $DIR
+./monitor_ltc.sh
+;;
+
+4)
+echo
+echo "===== STATUS MINER ====="
+echo
+
+if pgrep -f xmrig >/dev/null
+then
+    echo "Miner : RUNNING"
+else
+    echo "Miner : STOPPED"
+fi
+
+echo
+
+if [ -f $DIR/miner_ltc.log ]
+then
+    echo "Latest Log:"
+    tail -10 $DIR/miner_ltc.log
+else
+    echo "Log belum tersedia"
+fi
+
+echo
+read -p "Tekan Enter..."
+;;
+
+5)
+exit
+;;
+
+*)
+echo "Pilihan salah"
+;;
+
+esac
