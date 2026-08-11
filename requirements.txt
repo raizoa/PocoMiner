@@ -1,0 +1,7 @@
+git
+wget
+curl
+nano
+openssl
+libuv
+jq
