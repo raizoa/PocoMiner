@@ -32,21 +32,24 @@ chmod +x system_check.sh
 
 
 echo
-echo "[2] Install Dependency"
 
+echo "[2] Repair package"
+
+apt --fix-broken install -y || true
 
 pkg update -y
 pkg upgrade -y
+
+
+echo "[3] Install dependency"
 
 pkg install -y \
 git \
 wget \
 curl \
-nano \
 openssl \
 libuv \
 jq
-
 
 echo
 echo "[3] Check Tools"
@@ -71,22 +74,32 @@ echo "[4] Download PocoMiner"
 cd $HOME
 
 
-if [ -d "$BASE" ]; then
+if [ -d "$BASE/.git" ]; then
 
-echo "PocoMiner exists"
-echo "Updating..."
+    echo "PocoMiner git repository exists"
+    cd $BASE
+    git pull
 
-cd $BASE
-git pull
+elif [ -d "$BASE" ]; then
+
+    echo "Folder PocoMiner ada tapi bukan git repo"
+    echo "Menghapus folder lama..."
+
+    rm -rf $BASE
+
+    git clone \
+    https://github.com/raizoa/PocoMiner.git \
+    $BASE
 
 else
 
-git clone \
-https://github.com/raizoa/PocoMiner.git \
-$BASE
+    echo "Clone PocoMiner"
+
+    git clone \
+    https://github.com/raizoa/PocoMiner.git \
+    $BASE
 
 fi
-
 
 echo
 echo "[5] Permission"
