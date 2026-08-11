@@ -139,8 +139,10 @@ EOF
 
 chmod +x $HOME/bin/poco
 
+touch ~/.bashrc
+
 if ! grep -q "$HOME/bin" ~/.bashrc; then
-echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
+    echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
 fi
 
 source ~/.bashrc
