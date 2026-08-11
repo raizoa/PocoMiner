@@ -131,16 +131,19 @@ echo "[7] Create command"
 
 mkdir -p $HOME/bin
 
-
 cat > $HOME/bin/poco <<EOF
 #!/data/data/com.termux/files/usr/bin/bash
-cd $BASE
+cd $HOME/PocoMiner
 ./poco
 EOF
 
-
 chmod +x $HOME/bin/poco
 
+if ! grep -q "$HOME/bin" ~/.bashrc; then
+echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
+fi
+
+source ~/.bashrc
 
 echo
 echo "=============================="
