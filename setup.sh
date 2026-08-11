@@ -1,6 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 export DEBIAN_FRONTEND=noninteractive
+export TERMUX_PKG_NO_PROMPT=1
 
 set -e
 
@@ -39,9 +40,8 @@ echo "[2] Repair package"
 
 apt --fix-broken install -y || true
 
-pkg update -y
-pkg upgrade -y
-
+yes | pkg update -y
+yes | pkg upgrade -y
 
 echo "[3] Install dependency"
 
