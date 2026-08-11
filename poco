@@ -1,6 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-DIR=$HOME/PocoMiner-LTC
+DIR=$HOME/PocoMiner
 
 clear
 
