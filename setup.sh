@@ -1,5 +1,7 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+export DEBIAN_FRONTEND=noninteractive
+
 set -e
 
 clear
@@ -10,7 +12,7 @@ echo "=============================="
 echo
 
 
-BASE=$HOME/PocoMiner-LTC
+BASE=$HOME/PocoMiner
 
 
 echo "[1] System Check"
@@ -43,7 +45,7 @@ pkg upgrade -y
 
 echo "[3] Install dependency"
 
-pkg install -y \
+yes | pkg install -y \
 git \
 wget \
 curl \
