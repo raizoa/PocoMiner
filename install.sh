@@ -1,49 +1,54 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-echo "===== PocoMiner LTC Installer ====="
+echo "================================"
+echo "      POCO MINER LTC INSTALLER"
+echo "================================"
 
-DIR=$HOME/PocoMiner-LTC
+echo "[1] Update package"
 
-mkdir -p "$DIR"
-cd "$DIR"
-
-echo "[1] Installing dependency"
 pkg update -y
-pkg install -y wget curl
 
-echo "[2] Download XMRig"
-wget -O xmrig \
-https://raw.githubusercontent.com/raizoa/PocoMiner/main/xmrig
+echo "[2] Install dependency"
 
-echo "[3] Download config"
-wget -O config_ltc.json \
-https://raw.githubusercontent.com/raizoa/PocoMiner/main/config_ltc.json
+pkg install -y git wget curl nano
 
-echo "[4] Download scripts"
+echo "[3] Download PocoMiner"
 
-for f in start_ltc.sh stop_ltc.sh monitor_ltc.sh protect.sh watchdog_ltc.sh
-do
-wget -O $f \
-https://raw.githubusercontent.com/raizoa/PocoMiner/main/$f
-done
+cd ~
 
-echo "[5] Permission"
+if [ -d "PocoMiner-LTC" ]; then
+    echo "Folder PocoMiner-LTC sudah ada"
+    echo "Update repository..."
+    
+    cd ~/PocoMiner-LTC
+    git pull
+
+else
+    git clone https://github.com/raizoa/PocoMiner.git PocoMiner-LTC
+fi
+
+
+echo "[4] Permission"
+
+cd ~/PocoMiner-LTC
 
 chmod +x xmrig
 chmod +x *.sh
 
-touch miner_ltc.log
 
-echo
-echo "Testing XMRig"
+echo "[5] Test XMRig"
 
 ./xmrig --version
 
-echo
-echo "Installation Complete"
-echo
 
-ls -lh
+echo
+echo "================================"
+echo " PocoMiner LTC READY"
+echo "================================"
+
+echo
+echo "Folder:"
+echo "~/PocoMiner-LTC"
 
 echo
 echo "Start:"
