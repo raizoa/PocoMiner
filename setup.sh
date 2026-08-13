@@ -103,6 +103,65 @@ else
 
 fi
 
+cd "$BASE"
+
+# ==============================
+# Generate Unique Worker
+# ==============================
+
+echo "[Worker] Generate unique worker"
+
+cd "$BASE" || exit 1
+
+WORKER_FILE="$BASE/worker.txt"
+
+if [ -f "$WORKER_FILE" ]; then
+
+    WORKER=$(cat "$WORKER_FILE")
+
+    echo "[OK] Existing Worker: $WORKER"
+
+else
+
+    # Get device model
+    MODEL=$(getprop ro.product.model 2>/dev/null)
+
+    if [ -z "$MODEL" ]; then
+        MODEL="ANDROID"
+    fi
+
+    MODEL=$(echo "$MODEL" | tr ' ' '-' | tr -cd '[:alnum:]-')
+
+    # Try to get serial number
+    DEVICE_ID=$(getprop ro.serialno 2>/dev/null)
+
+    # Clean serial
+    DEVICE_ID=$(echo "$DEVICE_ID" | tr -cd '[:alnum:]')
+
+    # If serial unavailable or invalid, generate random ID
+    if [ -z "$DEVICE_ID" ] || [ "$DEVICE_ID" = "unknown" ]; then
+
+        DEVICE_ID=$(head -c 16 /dev/urandom | od -An -tx1 | tr -d ' \n' | cut -c1-6)
+
+    else
+
+        DEVICE_ID=$(echo "$DEVICE_ID" | tail -c 7)
+
+    fi
+
+    WORKER="${MODEL}-${DEVICE_ID}"
+
+    echo "$WORKER" > "$WORKER_FILE"
+
+    echo "[OK] New Worker: $WORKER"
+
+fi
+
+# Replace default worker name in config
+sed -i "s/PocoX5/$WORKER/g" "$BASE/config_ltc.json"
+
+echo "[OK] Worker configured"
+
 echo
 echo "[5] Permission"
 
