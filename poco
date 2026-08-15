@@ -9,11 +9,12 @@ echo "       POCO X5 LTC MINER"
 echo "=============================="
 echo
 
-echo "1. Start Mining"
-echo "2. Stop Mining"
-echo "3. Monitor"
-echo "4. Status"
-echo "5. Exit"
+echo "1. Start Mining LTC"
+echo "2. Start Mining XMR"
+echo "3. Stop Mining"
+echo "4. Monitor"
+echo "5. Status"
+echo "6. Exit"
 echo
 
 read -p "Choose : " menu
@@ -27,15 +28,34 @@ cd $DIR
 
 2)
 cd $DIR
-./stop_ltc.sh
+./start_xmr.sh
 ;;
 
 3)
 cd $DIR
-./monitor_ltc.sh
+./stop_ltc.sh
 ;;
 
 4)
+cd $DIR
+
+if pgrep -f xmrig >/dev/null
+then
+    echo "Miner : RUNNING"
+    echo
+
+    if pgrep -af xmrig | grep -q "config_xmr.json"
+    then
+        ./monitor_xmr.sh
+    else
+        ./monitor_ltc.sh
+    fi
+else
+    echo "Miner : STOPPED"
+fi
+;;
+
+5)
 echo
 echo "===== STATUS MINER ====="
 echo
@@ -43,23 +63,43 @@ echo
 if pgrep -f xmrig >/dev/null
 then
     echo "Miner : RUNNING"
+    echo
+
+    echo "Process:"
+    pgrep -af xmrig
+
+    echo
+
+    if pgrep -af xmrig | grep -q "config_xmr.json"
+    then
+        echo "Mining : XMR"
+
+        if [ -f $DIR/miner_xmr.log ]
+        then
+            echo
+            echo "Latest XMR Log:"
+            tail -10 $DIR/miner_xmr.log
+        fi
+
+    else
+        echo "Mining : LTC"
+
+        if [ -f $DIR/miner_ltc.log ]
+        then
+            echo
+            echo "Latest LTC Log:"
+            tail -10 $DIR/miner_ltc.log
+        fi
+    fi
+
 else
     echo "Miner : STOPPED"
 fi
 
 echo
-
-if [ -f $DIR/miner_ltc.log ]
-then
-    echo "Latest Log:"
-    tail -10 $DIR/miner_ltc.log
-else
-    echo "Log belum tersedia"
-fi
-
-echo
 read -p "Tekan Enter..."
 ;;
+
 
 5)
 exit
