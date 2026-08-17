@@ -157,8 +157,9 @@ else
 
 fi
 
-# Replace default worker name in config
-sed -i "s/PocoX5/$WORKER/g" "$BASE/config_ltc.json"
+# Update worker name in config
+sed -i -E "s/(\"user\": \"LTC:[^\"]+\.)[^\" ]+/\1$WORKER/" \
+"$BASE/config_ltc.json"
 
 echo "[OK] Worker configured"
 
