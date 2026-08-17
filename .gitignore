@@ -1,3 +1,4 @@
 miner*.log
 watchdog.log
 *.tmp
+worker.txt
