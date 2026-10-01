@@ -2,8 +2,7 @@
 
 BASE_DIR="/app"
 XMRIG="$BASE_DIR/xmrig"
-CONFIG="$BASE_DIR/config_ltc.json"
-LOG="$BASE_DIR/miner_ltc.log"
+CONFIG="$BASE_DIR/config_railway_ltc.json"
 
 echo "========================================"
 echo "       PocoMiner - Railway LTC"
@@ -11,6 +10,7 @@ echo "========================================"
 echo "Architecture: $(uname -m)"
 echo "XMRig       : $XMRIG"
 echo "Config      : $CONFIG"
+echo "CPU Threads : 4"
 echo "========================================"
 
 if [ ! -x "$XMRIG" ]; then
@@ -22,5 +22,4 @@ fi
 echo "Starting XMRig LTC..."
 
 exec "$XMRIG" \
-    -c "$CONFIG" \
-    -l "$LOG"
+    -c "$CONFIG"
