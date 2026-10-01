@@ -24,10 +24,9 @@ RUN mkdir -p /tmp/xmrig/build && \
     make -j"$(nproc)" && \
     cp xmrig /app/xmrig
 
-COPY config_ltc.json /app/config_ltc.json
+COPY config_railway_ltc.json /app/config_railway_ltc.json
 COPY start_railway.sh /app/start_railway.sh
 
-RUN chmod +x /app/xmrig \
-    /app/start_railway.sh
+RUN chmod +x /app/xmrig /app/start_railway.sh
 
 CMD ["/app/start_railway.sh"]
