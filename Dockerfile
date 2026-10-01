@@ -13,18 +13,21 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-COPY xmrig-build/src /app/xmrig-src
-COPY config_ltc.json /app/config_ltc.json
-COPY start_railway.sh /app/start_railway.sh
+RUN git clone --depth 1 https://github.com/xmrig/xmrig.git /tmp/xmrig
 
-RUN mkdir -p /app/xmrig-build && \
-    cd /app/xmrig-build && \
-    cmake /app/xmrig-src \
+RUN mkdir -p /tmp/xmrig/build && \
+    cd /tmp/xmrig/build && \
+    cmake .. \
         -DWITH_HWLOC=ON \
         -DWITH_TLS=ON \
         -DWITH_HTTPD=OFF && \
-    make -j"$(nproc)"
+    make -j"$(nproc)" && \
+    cp xmrig /app/xmrig
 
-RUN chmod +x /app/start_railway.sh
+COPY config_ltc.json /app/config_ltc.json
+COPY start_railway.sh /app/start_railway.sh
+
+RUN chmod +x /app/xmrig \
+    /app/start_railway.sh
 
 CMD ["/app/start_railway.sh"]
