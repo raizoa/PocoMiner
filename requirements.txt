@@ -1,4 +1,3 @@
-git
 wget
 curl
 nano
